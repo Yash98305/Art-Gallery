@@ -30,8 +30,8 @@ exports.userRegisterController = catchAsyncErrors(async (req, res, next) => {
   if (!name|| !phone || !email || !password) {
     return next(new ErrorHandler("Please Enter Required Field", 400));
   }
-  const usere = await User.findOne({ email }).select("+password");
-  if (!usere) {
+  const users = await User.findOne({ email });
+  if (!users) {
     return next(new ErrorHandler("Email Exist", 401));
   }
     const user = new User({
