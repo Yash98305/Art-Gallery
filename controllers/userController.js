@@ -70,7 +70,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
  
   if(photo && photo.size > 1000000){
     return res
-      .status(500)
+      .status(400)
       .send({ error: "photo is Required and should be less then 1mb" });
 }
 
@@ -152,7 +152,9 @@ exports.postOTPController = catchAsyncErrors(async (req, res, next) => {
 
 exports.forgotPasswordController = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
+  console.log(1)
   if (!user) {
+    console.log(2)
     return next(new ErrorHandler("User not found", 404));
   }
   function generateOTP() {
@@ -163,10 +165,15 @@ exports.forgotPasswordController = catchAsyncErrors(async (req, res, next) => {
     }
     return OTP;
   }
+  console.log(3)
   const OTP = await generateOTP();
+  console.log(4)
   user.otp = OTP;
+  console.log(5)
   await user.save();
-  await sendEmail(user.email, OTP, "OTP");
+  console.log(6)
+  await sendEmail(req.body.email, OTP, "OTP");
+  console.log(7)
   res.status(200).json({
     success: true,
     message: "check your registered email for OTP",
@@ -175,9 +182,9 @@ exports.forgotPasswordController = catchAsyncErrors(async (req, res, next) => {
     user.otp = "";
     await user.save();
   };
-  setTimeout(function () {
-    helper();
-  }, 300000);
+  // setTimeout(function () {
+  //   helper();
+  // }, 300000);
 });
 
 
