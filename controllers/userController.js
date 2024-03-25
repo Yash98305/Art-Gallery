@@ -151,7 +151,8 @@ exports.postOTPController = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.forgotPasswordController = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const useremail = req.body.email;
+  const user = await User.findOne({ email: useremail });
   if (!user) {
     return next(new ErrorHandler("User not found", 404));
   }
@@ -166,10 +167,10 @@ exports.forgotPasswordController = catchAsyncErrors(async (req, res, next) => {
   const OTP = await generateOTP();
   user.otp = OTP;
   await user.save();
-  await sendEmail(req.body.email, OTP, "OTP");
+  await sendEmail(useremail, OTP, "OTP");
   res.status(200).json({
     success: true,
-    message: "check your registered email for OTP",
+    message: `check your registered email (${useremail}) for OTP`,
   });
   const helper = async () => {
     user.otp = "";
