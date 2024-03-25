@@ -2,11 +2,8 @@ const nodemailer = require('nodemailer');
 const catchAsyncError = require('../middlewares/catchAsyncError');
 
 const transport = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port: 465,
+  
     service: "gmail",
-    secure: true,
-    
     auth: {
         user: "yash252525patel@gmail.com"||process.env.SMPT_MAIL,
         pass: "ftmujtjnqgariqhi" ||process.env.SMPT_PASSWORD,
