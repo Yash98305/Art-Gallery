@@ -23,6 +23,17 @@ const productSchema = new mongoose.Schema(
     shipping: {
       type: Boolean,
     },
+    user : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    // createdAt:{
+    //   type : Date
+    // },
+    // updatedAt:{
+    //   type : Date
+    // },
   },
   { timestamps: true }
 );

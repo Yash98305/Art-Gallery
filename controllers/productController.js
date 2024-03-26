@@ -9,6 +9,7 @@ const assert = require("assert");
 exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
     const { name, description, price,shipping } =
     req.fields;
+    const useremail = req.user._id;
   const { photo } = req.files;
   //alidation
   if(!name || !description || !price ){
@@ -18,7 +19,7 @@ exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
     return next(new ErrorHandler("photo is Required and should be less then 1mb",400));   
   }
   
-  const products = new Product({ ...req.fields});
+  const products = new Product({ ...req.fields,user:useremail});
   if (photo) {
     products.photo.data = fs.readFileSync(photo.path);
     products.photo.contentType = photo.type;
@@ -31,12 +32,20 @@ exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
   });
 })
 exports.getProductController = catchAsyncErrors(async (req, res, next) =>{
-    const products = await Product.find({}).select("-photo").limit(12).sort({ createdAt: -1 });
+    const products = await Product.find({}).sort({ updatedAt: -1 });
   res.status(200).send({
     success: true,
     counTotal: products.length,
     message: "ALlProducts ",
     products,
+  });
+})
+exports.getMyProductController = catchAsyncErrors(async (req, res, next) =>{
+    const products = await Product.find({user : req.user._id}).sort({ updatedAt: -1 });
+  res.status(200).send({
+    success: true,
+    counTotal: products.length,
+     products
   });
 })
 exports.updateProductController = catchAsyncErrors(async (req, res, next) =>{
