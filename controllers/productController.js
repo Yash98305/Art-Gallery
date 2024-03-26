@@ -32,7 +32,7 @@ exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
   });
 })
 exports.getProductController = catchAsyncErrors(async (req, res, next) =>{
-    const products = await Product.find({}).sort({ updatedAt: -1 });
+    const products = await Product.find({}).select("-photo").sort({ updatedAt: -1 });
   res.status(200).send({
     success: true,
     counTotal: products.length,
@@ -41,7 +41,7 @@ exports.getProductController = catchAsyncErrors(async (req, res, next) =>{
   });
 })
 exports.getMyProductController = catchAsyncErrors(async (req, res, next) =>{
-    const products = await Product.find({user : req.user._id}).sort({ updatedAt: -1 });
+    const products = await Product.find({user : req.user._id}).select("-photo").sort({ updatedAt: -1 });
   res.status(200).send({
     success: true,
     counTotal: products.length,
