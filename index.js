@@ -13,7 +13,12 @@ const {fileURLToPath} = require("url");
 
 dotenv.config()
 
-app.use(cors());
+const corsOptions = {
+    origin: "http://localhost:5173",
+    methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+    credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser());
