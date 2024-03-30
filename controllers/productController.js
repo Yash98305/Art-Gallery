@@ -3,7 +3,7 @@ const catchAsyncErrors = require("../middlewares/catchAsyncError.js");
 const Product = require("../models/productModel.js");
 const fs = require("fs") ;
 const assert = require("assert");
-
+const User = require("../models/uerModel.js");
 
 
 exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
@@ -32,7 +32,8 @@ exports.createProductController = catchAsyncErrors(async (req, res, next) =>{
   });
 })
 exports.getProductController = catchAsyncErrors(async (req, res, next) =>{
-    const products = await Product.find({}).select("-photo").sort({ updatedAt: -1 });
+  const products = await Product.find({}).select("-photo").populate("user").sort({ updatedAt: -1 });
+ 
   res.status(200).send({
     success: true,
     counTotal: products.length,
