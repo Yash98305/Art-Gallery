@@ -28,12 +28,10 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // createdAt:{
-    //   type : Date
-    // },
-    // updatedAt:{
-    //   type : Date
-    // },
+   quantity : {
+    type:Number,
+    default: 1
+   }
   },
   { timestamps: true }
 );

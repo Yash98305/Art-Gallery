@@ -13,23 +13,16 @@ exports.addProductsInCart = catchAsyncError(async(req,res,next)=>{
     }
     const cart = await Cart.findOne({userId});
     if(!cart){
-        const newCart = new Cart({userId, productId: {productId: productId, quantity:1}});
+        const newCart = new Cart({userId, productId: [productId]});
         await newCart.save();
         return res.status(200).send({
             success: true,
             message: "Product added to cart",
         })
     }
-    const o = cart.productId.map((e)=>{
-if(e.productId.includes(productId)){
-    return true;
-}
-else{
-    return false;
-}
-    })
-    // console.log(o)
-    if(o.includes(true)){
+  
+  
+    if(cart.productId.includes(productId)){
         return res.status(200).send({
             success: true,
             message: "Product already in cart",
@@ -37,10 +30,7 @@ else{
         })
     }
     await Cart.updateOne({userId},{$push: {
-        productId : {
-            productId,
-            quantity: 1
-        },
+        productId ,
         $position: 0
     }
 });
@@ -60,13 +50,7 @@ exports.showProductsInCart = catchAsyncError(async(req,res,next)=>{
             message: "Cart is empty",
         })
     }
-    console.log(cart)
-    const t =cart.productId.map((e)=>{
-        return e.productId
-     })
-     console.log(t)
-      const products = await Product.find({_id: {$in: t}}).select("-photo")
-  console.log(products)
+    const products = await Product.find({_id: {$in: cart.productId}}).select("-photo")
     res.status(200).send({
         success: true,
         message: "Products in cart",
@@ -98,26 +82,4 @@ exports.deleteProductFromCart = catchAsyncError(async(req,res,next)=>{
         success: true,
         message: "Product removed from cart"
     })
-})
-
-exports.updateQuantity = catchAsyncError(async(req, res, next) => {
-    const userId = req.user.id;
-    const productId = req.params.id;
-const quantity = req.body.quantity;
-if(quantity < 1){
-    return next(new ErrorHandler(`Invalid quantity`,400));
-}
-const obj = await Cart.findOne({userId});
-console.log(obj)
-obj.productId.map((e)=>{
-if(e.productId ===productId){
-    e.quantity = quantity;
-}})
-console.log(obj)
-await Cart.updateOne({userId: userId},obj)
-res.status(200).send({ 
-    message: "Quantity updated",
-    quantity: quantity
-})
-
 })
