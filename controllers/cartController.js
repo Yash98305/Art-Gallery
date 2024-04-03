@@ -13,14 +13,23 @@ exports.addProductsInCart = catchAsyncError(async(req,res,next)=>{
     }
     const cart = await Cart.findOne({userId});
     if(!cart){
-        const newCart = new Cart({userId, productId: productId});
+        const newCart = new Cart({userId, productId: {productId: productId, quantity:1}});
         await newCart.save();
         return res.status(200).send({
             success: true,
             message: "Product added to cart",
         })
     }
-    if(cart.productId.includes(productId)){
+    const o = cart.productId.map((e)=>{
+if(e.productId.includes(productId)){
+    return true;
+}
+else{
+    return false;
+}
+    })
+    // console.log(o)
+    if(o.includes(true)){
         return res.status(200).send({
             success: true,
             message: "Product already in cart",
@@ -28,11 +37,14 @@ exports.addProductsInCart = catchAsyncError(async(req,res,next)=>{
         })
     }
     await Cart.updateOne({userId},{$push: {
-        productId : productId,
+        productId : {
+            productId,
+            quantity: 1
+        },
         $position: 0
     }
 });
-console.log(1)
+// console.log(1)
     return res.status(200).send({
         success: true,
         message: "Product added to cart"
@@ -82,3 +94,24 @@ exports.deleteProductFromCart = catchAsyncError(async(req,res,next)=>{
     })
 })
 
+exports.updateQuantity = catchAsyncError(async(req, res, next) => {
+    const userId = req.user.id;
+    const productId = req.params.id;
+const quantity = req.body.quantity;
+if(quantity < 1){
+    return next(new ErrorHandler(`Invalid quantity`,400));
+}
+const obj = await Cart.findOne({userId});
+console.log(obj)
+obj.productId.map((e)=>{
+if(e.productId ===productId){
+    e.quantity = quantity;
+}})
+console.log(obj)
+await Cart.updateOne({userId: userId},obj)
+res.status(200).send({ 
+    message: "Quantity updated",
+    quantity: quantity
+})
+
+})
