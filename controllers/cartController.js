@@ -60,7 +60,13 @@ exports.showProductsInCart = catchAsyncError(async(req,res,next)=>{
             message: "Cart is empty",
         })
     }
-    const products = await Product.find({_id: {$in: cart.productId}}).select("-photo")
+    console.log(cart)
+    const t =cart.productId.map((e)=>{
+        return e.productId
+     })
+     console.log(t)
+      const products = await Product.find({_id: {$in: t}}).select("-photo")
+  console.log(products)
     res.status(200).send({
         success: true,
         message: "Products in cart",
