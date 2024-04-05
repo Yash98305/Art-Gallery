@@ -11,7 +11,7 @@ const morgan = require('morgan');
 const cookieParser = require("cookie-parser");
 const cors = require('cors')
 const {fileURLToPath} = require("url");
-
+const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
 
 const corsOptions = {
@@ -29,6 +29,7 @@ app.use('/api/v1/user',userRoute);
 app.use('/api/v1/product',productRoute);
 app.use('/api/v1/team',teamRoute);
 app.use('/api/v1/cart',cartRoute);
+app.use('/api/v1',contactRoute);
 
 app.get('/',(req,res)=>{
     res.send({
