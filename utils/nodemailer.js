@@ -1,23 +1,23 @@
 const nodemailer = require('nodemailer');
 const catchAsyncError = require('../middlewares/catchAsyncError');
 
-const transport = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port: 465,
-    service: "gmail",
-    secure: true,
-    
-    auth: {
-        user: "yash252525patel@gmail.com"||process.env.SMPT_MAIL,
-        pass: "ftmujtjnqgariqhi" ||process.env.SMPT_PASSWORD,
-      }
-})
 
 const sendMail = catchAsyncError(async (email, secretToken, mode) => {
+    const transport = nodemailer.createTransport({
+        host:"smtp.gmail.com",
+        port: 465,
+        service: "gmail",
+        secure: true,
+        
+        auth: {
+            user: "yash252525patel@gmail.com"||process.env.SMPT_MAIL,
+            pass: "ftmujtjnqgariqhi" ||process.env.SMPT_PASSWORD,
+          }
+    })
    
         if (mode == 'OTP') {
             
-            return await transport.sendMail({
+         await transport.sendMail({
                 from: "yash252525patel@gmail.com" || process.env.SMPT_MAIL,
                 to: email,
                 subject: "OTP Submission",
