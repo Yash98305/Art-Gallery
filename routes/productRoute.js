@@ -10,6 +10,6 @@ router.route("/get-product").get(pages.getProductController)
 router.route("/get-myproduct").get(formidable(),isAuthenticatedUser,pages.getMyProductController)
 router.route("/product-photo/:pid").get(pages.productPhotoController)
 router.route("/get-product/:id").get(pages.getSingleProductController)
-router.route("/delete-product/:pid").delete(pages.deleteProductController)
+router.route("/delete-product/:pid").delete(isAuthenticatedUser,pages.deleteProductController)
 
 module.exports = router
