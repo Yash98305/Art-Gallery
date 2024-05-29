@@ -15,7 +15,7 @@ const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
 
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:4173",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD","OPTIONS"],
     credentials: true,
 };
@@ -36,7 +36,7 @@ app.get('/',(req,res)=>{
     res.send({
         message:"welcome to Art Gallery"
     })
-})
+})    
 
 app.use(errorMiddleware);
 
