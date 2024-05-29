@@ -21,6 +21,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json())
+app.use('/', express.static('dist'))
 app.use(morgan("dev"))
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
