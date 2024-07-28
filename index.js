@@ -14,20 +14,8 @@ const {fileURLToPath} = require("url");
 const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
 
-const allowedOrigins = [
-    "https://art-gallery-website-by-yash-patel.netlify.app",
-    "http://localhost:4173",
-    "http://localhost:5173"
-];
-
 const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: true, // Allow all origins
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     credentials: true,
 };
