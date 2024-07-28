@@ -15,7 +15,7 @@ const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
 
 const corsOptions = {
-    origin: '*',
+    origin: ["https://art-gallery-website-by-yash-patel.netlify.app","http://localhost:5173","http://localhost:4173"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     credentials: true,
 };
