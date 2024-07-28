@@ -15,7 +15,7 @@ const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
 
 const corsOptions = {
-    origin: true, // Allow all origins
+    origin: '*',
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     credentials: true,
 };
