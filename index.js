@@ -20,7 +20,7 @@ const corsOptions = {
     credentials: true,
 };
 
-app.use(cors(corsOptionsDelegate));
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use('/', express.static('dist'))
 app.use(morgan("dev"))
