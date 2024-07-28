@@ -13,22 +13,12 @@ const cors = require('cors')
 const {fileURLToPath} = require("url");
 const contactRoute = require("./routes/contactRoute.js")
 dotenv.config()
-var allowlist = ["https://art-gallery-website-by-yash-patel.netlify.app","http://localhost:5173","http://localhost:4173"]
-var corsOptionsDelegate = function (req, callback) {
-  var corsOptions;
-  if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true,  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
-    credentials: true, } 
-  } else {
-    corsOptions = { origin: false } 
-  }
-  callback(null, corsOptions) 
-}
-// const corsOptions = {
-//     origin: ["https://art-gallery-website-by-yash-patel.netlify.app","http://localhost:5173","http://localhost:4173"],
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
-//     credentials: true,
-// };
+
+const corsOptions = {
+    origin: "https://art-gallery-website-by-yash-patel.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
+    credentials: true,
+};
 
 app.use(cors(corsOptionsDelegate));
 app.use(express.json())
